@@ -1,0 +1,16 @@
+{
+  "name": "impossible-states-fp-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:CristhianMotoche/impossible-states-fp-ts.git",
+  "author": "CristhianMotoche <cristhian.motoche@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "fusuma": "^2.8.4"
+  },
+  "scripts": {
+    "slides:dev": "fusuma start -p 8000",
+    "build": "fusuma build",
+    "slides": "fusuma start-prod -p 8000"
+  }
+}
