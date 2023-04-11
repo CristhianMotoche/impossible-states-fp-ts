@@ -1,21 +1,35 @@
 <!-- classes: title -->
 
-# Hello😃
+# Making impossible states with fp-ts and TypeScript in a React Application
 
 <!-- block-start: grid -->
-<!-- account: twitter, your-account-name -->
+<!-- account: twitter, camm_v222 -->
+<!-- account: github, CristhianMotoche -->
 <!-- block-end -->
 
 ---
 
-<!-- section-title: Bye👋 -->
+# Who am I?
 
-## Middle content
+Cristhian Motoche
 
 
-```javascript
-const x = 1
-```
+Software Developer @ Stack Builders
+
+
+Haskell, Elm, TypeScript, Python, etc.
+
+---
+
+## TypeScript
+
+---
+
+## fp-ts
+
+---
+
+## Making impossible states impossible
 
 ---
 
