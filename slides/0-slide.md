@@ -1,6 +1,6 @@
 <!-- classes: title -->
 
-# Making impossible states with fp-ts and TypeScript in a React Application
+# Making impossible states with TypeScript and fp-ts in a React Application
 
 <!-- block-start: grid -->
 <!-- account: twitter, camm_v222 -->
