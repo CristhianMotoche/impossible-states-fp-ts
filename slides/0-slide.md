@@ -114,11 +114,12 @@ interface Eq<T> {
 }
 
 // Type instances
-const userEq = Eq<User> = {
+const userEq: Eq<User> = {
   equals: (a, b) => a.name === b.name && a.role === b.role;
 }
 
-// Ord, Semigroup, Monoid, Functor, Applicative, Alternative, Monad, Bifunctor, etc...
+// Ord, Semigroup, Monoid, Functor, Applicative, Alternative,
+// Monad, Bifunctor, etc...
 ```
 
 
@@ -132,7 +133,6 @@ By Richard Feldman
 
 ![](./making-impossible-states.png)
 
-
 ---
 
 ## Making impossible states impossible
@@ -143,4 +143,73 @@ The purpose is to:
 
 ---
 
-## Bye👋
+For example, this interface:
+
+```ts
+type Role = 'author' | 'reader'
+type Comic = { title: string }
+
+interface User {
+  name: string
+  last_name: Optional<string>
+  roles: Array<Role>
+  favoriteComics: Array<Comic>
+}
+```
+
+allows for this type of scenarios:
+
+```ts
+const reader: User = { name: 'Cristhian'
+, last_name: O.none
+, roles: []
+, favoriteComics: [{ title: 'Gremory Land' }]
+// ^^ User without role but with last access!
+}
+```
+---
+
+## Making impossible states impossible
+
+Let's avoid that creating types to avoid those representations:
+
+```ts
+interface User {
+  name: str
+  last_name: Option<Date>
+  roles: NonEmptyArray<Role>
+}
+
+interface Author extends User {
+  roles: ["author"]
+}
+
+interface Reader extends User {
+  roles: ["reader"]
+  favoriteComics: Array<Comic>
+}
+```
+
+---
+
+It will complain if we try to define something like this:
+
+```ts
+const oddReader: Author = {
+  name: 'Cristhian',
+  last_name: O.none,
+  roles: ['author'],
+  // ^^ Invalid type & Missing keys: favoriteComics!
+}
+
+const oddReader: Reader = {
+  name: 'Cristhian',
+  last_name: O.none,
+  roles: ['author'],
+  // ^^ Invalid type & Missing keys: favoriteComics!
+}
+```
+
+---
+
+## Thanks
