@@ -139,18 +139,18 @@ For example, a form to order a pizza:
 
 ```ts
 interface PizzaOrder {
-  mainSelection: Option<PizzaType>
-  secondSelection: Option<PizzaType>
+  mainIngredient: Option<Ingredient>
+  secondIngredient: Option<Ingredient>
   extras: Array<Extra>
 }
 ```
 
-allows for this type of scenarios:
+allows for these type of scenarios:
 
 ```ts
 const order: PizzaOrder = {
-  mainSelection: O.none,
-  secondSelection: O.none,
+  mainIngredient: O.none,
+  secondIngredient: O.none,
   extras: ['meat'],
 }
 // ^^ Don't have type but include extras?
@@ -162,14 +162,12 @@ const order: PizzaOrder = {
 What about this?
 
 ```ts
-interface TypeAndExtras {
-  type: PizzaType
-  extras: Array<Extra>
-}
-
 interface PizzaOrder {
-  mainSelection: Option<TypeAndExtras>
-  secondSelection: Option<PizzaType>
+  mainIngredient: Option<{
+    main: Ingredient
+    extras: Array<Extra>
+  }>
+  secondIngredient: Option<Ingredient>
 }
 ```
 
@@ -177,8 +175,8 @@ It allows:
 
 ```ts
 const order: PizzaOrder = {
-  mainSelection: O.none
-  secondSelection: O.some('vegetarian')
+  mainIngredient: O.none,
+  secondIngredient: O.some('vegetarian'),
 }
 ```
 
@@ -189,33 +187,31 @@ const order: PizzaOrder = {
 How about this?
 
 ```ts
-interface Selection {
-  main: PizzaType
-  second: Option<PizzaType>
-}
+type PizzaOrder = NoMainIngredient | SelectedMain
 
-type NoMainSelection = {
-  tag: 'NoMainSelection'
+type NoMainIngredient = {
+  tag: 'NoMainIngredient'
 }
 
 type SelectedMain = {
-  selection: Selection
+  selection: {
+    main: Ingredient
+    second: Option<Ingredient>
+  }
   extras: Array<Extra>
   tag: 'SelectedMain'
 }
-
-type PizzaOrder = NoMainSelection | SelectedMain
 ```
 
 ---
 
-## Define functions and type instances over it
+## Define smart constructors, functions, and type instances for it:
 
 ```ts
 
-export const noSelection: PizzaOrder = { tag: 'NoMainSelection' }
+export const noIngredient: PizzaOrder = { tag: 'NoMainIngredient' }
 
-export const mkSelection: PizzaOrder = (main: PizzaType) => {
+export const mkSelection: PizzaOrder = (main: Ingredient) => {
   selection: {
     main,
     second: O.none,
@@ -233,7 +229,7 @@ export const pizzaOrderEq: Eq<PizzaOrder> {
 
 ---
 
-## Use hooks that work for this types:
+## Use hooks that work for these types:
 
 Use [fp-ts-react-stable-hooks](https://github.com/mblink/fp-ts-react-stable-hooks):
 
@@ -243,7 +239,10 @@ Use [fp-ts-react-stable-hooks](https://github.com/mblink/fp-ts-react-stable-hook
 // useStableMemo -> useMemo
 // useStableCallback -> useCallback
 
-const [pizzaOrder, setPizzaOrder] = useStable(PO.noSelection)
+const [pizzaOrder, setPizzaOrder] = useStable(
+  noIngredient,
+  Eq.tuple(pizzaOrderEq),
+)
 
 useStableEffect(
    () => { ... },
