@@ -20,7 +20,7 @@ Software Developer @ Stack Builders
 
 ## Things I like from Haskell/Elm:
 
-- Strong and Static Typing
+- Strong and Static Typed Languages
 
 - Functional Programming
 
